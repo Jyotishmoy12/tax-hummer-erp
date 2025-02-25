@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model} from 'mongoose';
 
 export interface ISystemLog extends Document { 
     message: string; level: 'info' | 'warning' | 'error'; 
@@ -10,4 +10,8 @@ const SystemLogSchema: Schema = new Schema(
     default: 'info' }, timestamp: { type: Date, default: Date.now }, 
 });
 
-export default mongoose.models.SystemLog || mongoose.model<ISystemLog>('SystemLog', SystemLogSchema);
+const SystemLogModel: Model<ISystemLog> = 
+    mongoose.models.SystemLog || 
+    mongoose.model<ISystemLog>('SystemLog', SystemLogSchema);
+
+export default SystemLogModel;
