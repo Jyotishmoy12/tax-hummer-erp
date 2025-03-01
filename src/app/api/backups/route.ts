@@ -16,9 +16,9 @@ export async function GET(request: Request) {
 // POST: Schedule a new backup
 export async function POST(
   request: Request, 
-  context: { params: { id: string } }  // Correct way to receive params in App Router
+  {params}:{params:Promise<{id:string}>} // Correct way to receive params in App Router
 ): Promise<Response> {
-  const { id } = context.params;  // Extract params properly
+  const { id } = await params;  // Extract params properly
 
   try {
     return NextResponse.json({ success: true, message: `Backup ${id} restored successfully` });
