@@ -1,17 +1,23 @@
-import mongoose, { Schema, Document, Model} from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface ISystemLog extends Document { 
-    message: string; level: 'info' | 'warning' | 'error'; 
-    timestamp: Date; }
+export interface ISystemLog extends Document {
+  timestamp: Date;
+  level: 'info' | 'warning' | 'error';
+  message: string;
+  meta?: Record<string, any>;
+}
 
 const SystemLogSchema: Schema = new Schema(
-    { message: { type: String, required: true }, 
-    level: { type: String, enum: ['info', 'warning', 'error'], 
-    default: 'info' }, timestamp: { type: Date, default: Date.now }, 
-});
+  {
+    timestamp: { type: Date, default: Date.now },
+    level: { type: String, enum: ['info', 'warning', 'error'], default: 'info' },
+    message: { type: String, required: true },
+    meta: { type: Schema.Types.Mixed, default: {} },
+  },
+  { timestamps: true }
+);
 
-const SystemLogModel: Model<ISystemLog> = 
-    mongoose.models.SystemLog || 
-    mongoose.model<ISystemLog>('SystemLog', SystemLogSchema);
+const SystemLog: Model<ISystemLog> =
+  mongoose.models.SystemLog || mongoose.model<ISystemLog>('SystemLog', SystemLogSchema);
 
-export default SystemLogModel;
+export default SystemLog;

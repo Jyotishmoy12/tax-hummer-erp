@@ -1,30 +1,30 @@
-import { NextResponse } from "next/server";
-import connectDB from "../../../db/mongodb";
-import SystemLog from "../../../db/models/SystemLog";
+import { NextResponse } from 'next/server';
+import connectDB from '../../../db/mongodb';
+import SystemLog from '../../../db/models/SystemLog';
 
-export async function GET() {
+// GET: Fetch system logs (sorted by most recent)
+export async function GET(request: Request) {
   await connectDB();
   try {
-    const logs = await SystemLog.find();
+    const logs = await SystemLog.find({}).sort({ timestamp: -1 });
     return NextResponse.json({ success: true, data: logs });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message });
+    return NextResponse.json(
+      { success: false, message: error.message },
+      { status: 500 }
+    );
   }
 }
 
-export async function POST(request: Request) {
+// DELETE: Clear all system logs
+export async function DELETE(request: Request) {
   await connectDB();
-  const body = await request.json();
   try {
-    const logEntry = new SystemLog(body);
-    await logEntry.save();
-    return NextResponse.json(
-      { success: true, data: logEntry },
-      { status: 201 }
-    );
+    await SystemLog.deleteMany({});
+    return NextResponse.json({ success: true, message: 'All logs deleted successfully' });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, message: error.message },
       { status: 500 }
     );
   }

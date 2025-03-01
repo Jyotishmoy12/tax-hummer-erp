@@ -6,6 +6,7 @@ export interface ITransaction extends Document {
   debit: number;
   credit: number;
   description: string;
+  currency: string; // new field for multi-currency support
 }
 
 const transactionSchema: Schema = new Schema({
@@ -14,11 +15,11 @@ const transactionSchema: Schema = new Schema({
   debit: { type: Number, default: 0 },
   credit: { type: Number, default: 0 },
   description: { type: String, required: true },
+  currency: { type: String, required: true, default: "INR" }, // added field
 });
 
-// Properly type the model to avoid TypeScript errors
-const TransactionModel: Model<ITransaction> = 
-  mongoose.models.Transaction || 
+const TransactionModel: Model<ITransaction> =
+  mongoose.models.Transaction ||
   mongoose.model<ITransaction>('Transaction', transactionSchema);
 
 export default TransactionModel;

@@ -1,13 +1,14 @@
-import jwt from "jsonwebtoken"
+import jwt, { Secret, SignOptions, JwtPayload } from "jsonwebtoken"
 
-const JWT_SECRET = process.env.JWT_SECRET || "khusdfsfhkjdsnahk"
+const JWT_SECRET: Secret = process.env.JWT_SECRET || "khusdfsfhkjdsnahk"
 
-export function signToken(payload:object, expiresIn="1d"){
-    return jwt.sign(payload, JWT_SECRET, {expiresIn})
+export function signToken(payload: object, expiresIn: string | number = "1d") {
+    return jwt.sign(payload, JWT_SECRET, { expiresIn } as SignOptions)
 }
-export function verifyToken(token:string){
+
+export function verifyToken(token: string): JwtPayload | null {
     try {
-        return jwt.verify(token, JWT_SECRET)
+        return jwt.verify(token, JWT_SECRET) as JwtPayload
     } catch (error) {
         return null;
     }
