@@ -2,18 +2,21 @@ import { NextResponse } from 'next/server';
 import connectDB from '../../../../../db/mongodb';
 import Backup from '../../../../../db/models/Backup';
 
-// This should handle POST requests to /api/backups/[id]/restore
-export default function POST(
+// POST: Restore a backup with the given ID
+export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  props: { params: Promise<{ id: string }> }
 ) {
-   connectDB();
+  await connectDB();
+  
+  // Correctly await the params Promise
+  const params = await props.params;
   const { id } = params;
   
   try {
     // Your restore logic here
     // For example:
-    const backup =  Backup.findById(id);
+    const backup = await Backup.findById(id);
     if (!backup) {
       return NextResponse.json(
         { success: false, message: 'Backup not found' },
