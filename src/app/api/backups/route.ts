@@ -14,11 +14,17 @@ export async function GET(request: Request) {
 }
 
 // POST: Schedule a new backup
+// POST: Schedule a new backup
 export async function POST(
   request: Request,
-  { params, searchParams }: { params: { id: string }; searchParams: URLSearchParams }
+  { params }: { params: { id: string } }
 ): Promise<Response> {
   const { id } = params;
+  
+  // If you need search params, extract them from the request URL
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+  
   // Your restore logic here...
   try {
     // For example, simulate a restore operation:
