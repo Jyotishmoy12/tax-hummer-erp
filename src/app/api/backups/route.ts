@@ -14,21 +14,13 @@ export async function GET(request: Request) {
 }
 
 // POST: Schedule a new backup
-// POST: Schedule a new backup
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: Request, 
+  context: { params: { id: string } }  // Correct way to receive params in App Router
 ): Promise<Response> {
-  const { id } = params;
-  
-  // If you need search params, extract them from the request URL
-  const url = new URL(request.url);
-  const searchParams = url.searchParams;
-  
-  // Your restore logic here...
+  const { id } = context.params;  // Extract params properly
+
   try {
-    // For example, simulate a restore operation:
-    // (In production, you'd trigger the actual restore process here.)
     return NextResponse.json({ success: true, message: `Backup ${id} restored successfully` });
   } catch (error: any) {
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
