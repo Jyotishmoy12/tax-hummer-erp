@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import connectDB from '../../../../db/mongodb';
-import Backup from '../../../../db/models/Backup';
+import connectDB from '../../../../../db/mongodb';
+import Backup from '../../../../../db/models/Backup';
 
 // This should handle POST requests to /api/backups/[id]/restore
 export async function POST(
