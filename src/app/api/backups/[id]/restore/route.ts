@@ -2,20 +2,17 @@ import { NextResponse } from 'next/server';
 import connectDB from '../../../../../db/mongodb';
 import Backup from '../../../../../db/models/Backup';
 
+interface Props {
+  params: { id: string };
+}
+
 // POST: Restore a backup with the given ID
-export async function POST(
-  request: Request,
-  props: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: Request, { params }: Props) {
   await connectDB();
-  
-  // Correctly await the params Promise
-  const params = await props.params;
+
   const { id } = params;
-  
+
   try {
-    // Your restore logic here
-    // For example:
     const backup = await Backup.findById(id);
     if (!backup) {
       return NextResponse.json(
@@ -23,9 +20,9 @@ export async function POST(
         { status: 404 }
       );
     }
-    
+
     // Actual restore logic would go here
-    
+
     return NextResponse.json({ 
       success: true, 
       message: `Backup ${id} restored successfully` 
