@@ -13,12 +13,12 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST: Schedule a new backup
+// POST: Restore a backup using the dynamic route parameter
 export async function POST(
-  request: NextRequest, 
-  { params }: { params: Promise<{ id: string }> } // Correct way to receive params in App Router
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
-  const { id } = await params; // Extract params properly
+  const { id } = await params; // Await the promise to extract the dynamic parameter
 
   try {
     return NextResponse.json({ success: true, message: `Backup ${id} restored successfully` });
